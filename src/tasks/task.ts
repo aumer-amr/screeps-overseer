@@ -1,6 +1,7 @@
 import { TargetPos, TargetType } from "../prototypes/Target";
-import { deref, derefRoomPosition } from "../utils/refs";
 import { Task as ProtoTask } from "../prototypes/task";
+import { SwarmDrone } from "../swarm/SwarmDrone";
+import { deref, derefRoomPosition } from "../utils/refs";
 
 export abstract class Task {
 
@@ -10,10 +11,11 @@ export abstract class Task {
 		_pos: TargetPos;
 	};
 	public _targetPos: RoomPosition;
-	public creep: Creep;
+	public drone: SwarmDrone;
 
 	constructor(taskName: string, target: TargetType) {
 		this.taskName = taskName;
+		if (!target.pos) throw new Error("EERRO!33");
 
 		if (target) {
 			this._targetRef = {
@@ -37,7 +39,7 @@ export abstract class Task {
 
 	public isValid(): boolean {
 		let validTask = false;
-		if (this.creep) {
+		if (this.drone) {
 			validTask = this.isValidTask();
 		}
 
@@ -49,14 +51,15 @@ export abstract class Task {
 		return validTask && validTarget;
 	}
 
-	private moveToTarget(range = 1): number {
-		return this.creep.moveTo(this.targetPos, { range });
+	private moveToTarget(): number {
+		return this.drone.moveTo(this.targetPos);
 	}
 
 	public abstract work(): number;
 
 	get isWorking(): boolean {
-		return this.creep.pos.inRangeTo(this.targetPos, 1);
+		if (!this.drone.pos) throw new Error("EERRO!434");
+		return this.drone.pos.inRangeTo(this.targetPos, 1);
 	}
 
 	get target(): RoomObject | null {
@@ -66,6 +69,7 @@ export abstract class Task {
 	get targetPos(): RoomPosition {
 		if (!this._targetPos) {
 			if (this.target) {
+				if (!this.target.pos) throw new Error("EER4444RO!");
 				this._targetRef._pos = this.target.pos;
 			}
 			this._targetPos = derefRoomPosition(this._targetRef._pos);
@@ -84,15 +88,15 @@ export abstract class Task {
 
 	get proto(): ProtoTask {
 		return {
-			taskName: this.taskName,
-			creep : this.creep,
+			_targetPos: this._targetPos,
 			_targetRef: this._targetRef,
-			_targetPos: this._targetPos
+			drone : this.drone,
+			taskName: this.taskName
 		};
 	}
 
 	set proto(protoTask: ProtoTask) {
-		this.creep = protoTask.creep;
+		this.drone = protoTask.drone;
 		this._targetRef = protoTask._targetRef;
 		this._targetPos = protoTask._targetPos;
 	}

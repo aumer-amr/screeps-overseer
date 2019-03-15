@@ -1,5 +1,5 @@
 import { DronesCache } from "../cache/drones";
-import { SwarmDrone } from "../prototypes/SwarmDrone";
+import { SwarmDrone } from "../swarm/SwarmDrone";
 import { Tasks } from "../tasks/tasks";
 import { transferTargetType } from "../tasks/types/transfer";
 import nameGenerator from "../utils/nameGenerator";
@@ -13,9 +13,10 @@ export class HarvesterHost extends SwarmHost {
 
 	constructor(room: Room) {
 		super(room);
-		DronesCache.drones.forEach((drone: SwarmDrone) => {
+		for (const droneName in DronesCache.drones) {
+			const drone: SwarmDrone = DronesCache.drones[droneName];
 			if (drone.memory.role === this.creepRole) { this.creeps.push(drone); }
-		});
+		}
 	}
 
 	public isAllowedSpawn(): boolean {
@@ -35,18 +36,14 @@ export class HarvesterHost extends SwarmHost {
 
 	public task(): void {
 		this.creeps.forEach((creep: SwarmDrone) => {
-			if (creep.spawning === true) { return; }
-
-			console.log('Assign task')
+			if (creep.spawning === true && creep.ticksUntilSpawned === 0) { return; }
 
 			if (creep.carry.energy < creep.carryCapacity) {
 				const sources = creep.room.find(FIND_SOURCES);
 				if (!creep.pos.inRangeTo(sources[0], 1)) {
 					creep.task = Tasks.moveTo(sources[0].pos);
-					console.log('Assigning move to')
 				} else {
 					creep.task = Tasks.harvest(sources[0]);
-					console.log('Assigning harvest')
 				}
 			} else {
 				const targets = creep.room.find(FIND_STRUCTURES, {
@@ -59,15 +56,12 @@ export class HarvesterHost extends SwarmHost {
 				if (targets.length > 0) {
 					if (!creep.pos.inRangeTo(targets[0], 1)) {
 						creep.task = Tasks.moveTo(targets[0].pos);
-						console.log('Assigning move to 2')
 					} else {
 						creep.task = Tasks.transfer(targets[0] as transferTargetType);
-						console.log('Assigning transfer to')
 					}
 				} else {
 					const spawn: StructureSpawn = creep.room.find(FIND_MY_SPAWNS)[0];
 					creep.task = Tasks.moveTo(spawn.pos);
-					console.log('Assigning move to spawn')
 				}
 			}
 		});

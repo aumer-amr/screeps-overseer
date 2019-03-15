@@ -22,7 +22,9 @@ export class TaskMoveTo extends Task {
 	}
 
 	public isValidTask(): boolean {
-		return !this.creep.pos.inRangeTo(this.targetPos, 1);
+		
+		if (!this.drone.pos) throw new Error("EERRO!");
+		return !this.drone.pos.inRangeTo(this.targetPos, 1);
 	}
 
 	public isValidTarget(): boolean {

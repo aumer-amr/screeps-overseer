@@ -1,11 +1,12 @@
-import { TargetPos } from "./Target"
+import { SwarmDrone } from "../swarm/SwarmDrone";
+import { TargetPos } from "./Target";
 
 export interface Task {
-    taskName: string;
+	taskName: string;
 	_targetRef: {
 		ref: string;
 		_pos: TargetPos;
 	};
 	_targetPos: RoomPosition;
-	creep: Creep;
+	drone: SwarmDrone;
 }

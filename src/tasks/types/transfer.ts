@@ -9,6 +9,7 @@ export class TaskTransfer extends Task {
 	private transferTarget: transferTargetType;
 
 	constructor(target: transferTargetType) {
+		if (!target.pos) throw new Error("EERRO!");
 		super(taskName, {
 			pos: target.pos,
 			ref: target.id
@@ -17,7 +18,7 @@ export class TaskTransfer extends Task {
 	}
 
 	public isValidTask(): boolean {
-		const amount = this.creep.carry.energy || 0;
+		const amount = this.drone.carry.energy || 0;
 		if (amount > 0) {
 			return true;
 		}
@@ -30,9 +31,9 @@ export class TaskTransfer extends Task {
 	}
 
 	public work(): number {
-		const amount = this.creep.carry.energy || 0;
+		const amount = this.drone.carry.energy || 0;
 		if (amount > 0) {
-			this.creep.transfer(this.transferTarget, RESOURCE_ENERGY);
+			this.drone.transfer(this.transferTarget, RESOURCE_ENERGY);
 		}
 
 		return -1;

@@ -1,6 +1,6 @@
 import { Task } from "../tasks/task";
 
-export interface SwarmCreep extends CreepMemory {
+export interface DroneMemory extends CreepMemory {
 	upgrading: boolean;
 	role: string;
 	memory: CreepMemory;

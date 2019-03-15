@@ -8,6 +8,7 @@ export class TaskHarvest extends Task {
 	public target: Source;
 
 	constructor(target: Source) {
+		if (!target.pos) throw new Error("EERR2O!");
 		super(taskName, {
 			pos: target.pos,
 			ref: target.id
@@ -16,7 +17,7 @@ export class TaskHarvest extends Task {
 	}
 
 	public isValidTask(): boolean {
-		return this.creep.carry.energy < this.creep.carryCapacity;
+		return this.drone.carry.energy < this.drone.carryCapacity;
 	}
 
 	public isValidTarget(): boolean {
@@ -24,7 +25,7 @@ export class TaskHarvest extends Task {
 	}
 
 	public work(): number {
-		return this.creep.harvest(this.harvestTarget);
+		return this.drone.harvest(this.harvestTarget);
 	}
 
 }

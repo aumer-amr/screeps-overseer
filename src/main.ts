@@ -2,7 +2,7 @@
 
 import { DronesCache } from "./cache/drones";
 import { Overseer } from "./Overseer";
-import { SwarmDrone } from "./prototypes/SwarmDrone";
+import "./prototypes/RoomPosition";
 
 const overseer = new Overseer();
 
@@ -14,18 +14,11 @@ function main(): void {
 		}
 	}
 
+	DronesCache.clear();
+
 	overseer.init();
 	overseer.spawn();
-	//overseer.renewCreeps();
-
-	DronesCache.drones.forEach((drone: SwarmDrone) => {
-		if (drone.memory.role == "harvester") {
-			console.log('Task', drone.hasValidTask);
-		}
-		if (drone.hasValidTask) {
-			drone.run();
-		}
-	});
+	overseer.work();
 }
 
 export function loop(): void {

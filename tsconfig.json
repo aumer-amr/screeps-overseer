@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+	  "paths": { "*": ["types/*"] },
+    "module": "esnext",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "target": "es6",
+    "lib": ["es6", "dom", "es2017", "es2015"],
+    "outDir": "dist/",
+    "baseUrl": "src/",
+    "sourceMap": true,
+    "strict": true,
+    "strictBindCallApply": false,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "esModuleInterop": true,
+    "strictPropertyInitialization": false,
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

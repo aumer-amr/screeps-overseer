@@ -1,0 +1,37 @@
+{
+  "name": "overseer",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "npm run clean:dist && npm run clean:cache",
+    "clean:dist": "rmdir /S /Q dist",
+    "clean:cache": "rmdir /S /Q .rpt2_cache",
+    "compile": "rollup -c",
+    "lint": "tslint -p tsconfig.json 'src/**/*.ts'",
+    "test": "npm run clean && npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/lodash": "^4.14.123",
+    "@types/screeps": "^2.5.3",
+    "chalk": "^2.4.2",
+    "rollup": "^1.4.0",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-commonjs": "^9.1.5",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-screeps": "^0.1.2",
+    "rollup-plugin-typescript2": "^0.19.3",
+    "tslint": "^5.14.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/hat": "0.0.0",
+    "columnify": "^1.5.4",
+    "hat": "0.0.3",
+    "source-map": "^0.7.3"
+  }
+}

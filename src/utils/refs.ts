@@ -1,4 +1,4 @@
-import { TargetPos } from "../prototypes/Target";
+import { TargetPos } from "../declarations/Target";
 
 export function derefRoomPosition(target: TargetPos): RoomPosition {
 	return new RoomPosition(target.x, target.y, target.roomName || "");

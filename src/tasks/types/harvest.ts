@@ -8,7 +8,6 @@ export class TaskHarvest extends Task {
 	public target: Source;
 
 	constructor(target: Source) {
-		if (!target.pos) throw new Error("EERR2O!");
 		super(taskName, {
 			pos: target.pos,
 			ref: target.id

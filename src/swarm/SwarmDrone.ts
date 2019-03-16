@@ -64,6 +64,9 @@ export class SwarmDrone extends DroneActions {
 
 	set task(task: Task | null) {
 		this.memory.task = task ? task : null;
+		if (task) {
+			task.drone = this;
+		}
 		this._task = null;
 	}
 

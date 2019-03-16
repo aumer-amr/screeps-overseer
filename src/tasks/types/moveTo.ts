@@ -22,8 +22,6 @@ export class TaskMoveTo extends Task {
 	}
 
 	public isValidTask(): boolean {
-		
-		if (!this.drone.pos) throw new Error("EERRO!");
 		return !this.drone.pos.inRangeTo(this.targetPos, 1);
 	}
 

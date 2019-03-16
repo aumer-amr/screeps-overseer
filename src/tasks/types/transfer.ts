@@ -9,7 +9,6 @@ export class TaskTransfer extends Task {
 	private transferTarget: transferTargetType;
 
 	constructor(target: transferTargetType) {
-		if (!target.pos) throw new Error("EERRO!");
 		super(taskName, {
 			pos: target.pos,
 			ref: target.id

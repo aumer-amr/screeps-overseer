@@ -1,3 +1,4 @@
+import { DronesCache } from "../cache/drones";
 import { TargetPos, TargetType } from "../prototypes/Target";
 import { Task as ProtoTask } from "../prototypes/task";
 import { SwarmDrone } from "../swarm/SwarmDrone";
@@ -11,11 +12,12 @@ export abstract class Task {
 		_pos: TargetPos;
 	};
 	public _targetPos: RoomPosition;
-	public drone: SwarmDrone;
+	public _drone: { name: string };
 
 	constructor(taskName: string, target: TargetType) {
 		this.taskName = taskName;
-		if (!target.pos) throw new Error("EERRO!33");
+
+		this._drone = { name: "" };
 
 		if (target) {
 			this._targetRef = {
@@ -44,7 +46,7 @@ export abstract class Task {
 		}
 
 		let validTarget = false;
-		if (this.target) {
+		if (this.target || this.targetPos) {
 			validTarget = this.isValidTarget();
 		}
 
@@ -58,7 +60,6 @@ export abstract class Task {
 	public abstract work(): number;
 
 	get isWorking(): boolean {
-		if (!this.drone.pos) throw new Error("EERRO!434");
 		return this.drone.pos.inRangeTo(this.targetPos, 1);
 	}
 
@@ -69,7 +70,6 @@ export abstract class Task {
 	get targetPos(): RoomPosition {
 		if (!this._targetPos) {
 			if (this.target) {
-				if (!this.target.pos) throw new Error("EER4444RO!");
 				this._targetRef._pos = this.target.pos;
 			}
 			this._targetPos = derefRoomPosition(this._targetRef._pos);
@@ -99,5 +99,13 @@ export abstract class Task {
 		this.drone = protoTask.drone;
 		this._targetRef = protoTask._targetRef;
 		this._targetPos = protoTask._targetPos;
+	}
+
+	get drone(): SwarmDrone {
+		return DronesCache.drones[this._drone.name];
+	}
+
+	set drone(drone: SwarmDrone) {
+		this._drone.name = drone.name;
 	}
 }

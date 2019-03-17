@@ -50,7 +50,7 @@ export class Spawner {
 
 			spawnResult = spawn.spawnCreep(
 				request.body,
-				nameGenerator(request.role),
+				nameGenerator(),
 				{
 					memory: {
 						role: request.role

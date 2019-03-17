@@ -10,6 +10,7 @@ import { SwarmHost } from "./swarmhost";
 export class HarvesterHost extends SwarmHost {
 
 	private maxCreeps: number = 5;
+	private minCreeps: number = 3;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
 	public creepRole: string = "harvester";
 
@@ -21,11 +22,28 @@ export class HarvesterHost extends SwarmHost {
 		}
 	}
 
+	public reassign(): void {
+		for (const droneName in DronesCache.drones) {
+			if (this.creeps.length < this.minCreeps) {
+				const drone: SwarmDrone = DronesCache.drones[droneName];
+				if (drone.memory.role !== this.creepRole) {
+					drone.creep.say("Reassigned to " + this.creepRole + " from " + drone.memory.role);
+					drone.reassign(this);
+					this.creeps.push(drone);
+				}
+			}
+		}
+	}
+
 	public isAllowedSpawn(): boolean {
 		throw new Error("Method not implemented.");
 	}
 
 	public generate(): void {
+		if (this.creeps.length < this.minCreeps) {
+			this.reassign();
+		}
+
 		if (this.creeps.length >= this.maxCreeps) {
 			return;
 		}

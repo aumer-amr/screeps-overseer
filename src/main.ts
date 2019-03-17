@@ -5,9 +5,17 @@ import { Overseer } from "./Overseer";
 import Profiler from "./profiler/screeps-profiler";
 import "./prototypes/RoomPosition";
 
+let passedTicks = 0;
+const reportAtTicks = 500;
+
 const overseer = new Overseer();
 
 function main(): void {
+	if (passedTicks++ === reportAtTicks) {
+		Game.profiler.profile(reportAtTicks);
+		passedTicks = 0;
+	}
+
 	for (const name in Memory.creeps) {
 		if (!Game.creeps[name]) {
 			delete Memory.creeps[name];

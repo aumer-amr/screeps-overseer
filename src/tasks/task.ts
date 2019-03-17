@@ -13,6 +13,7 @@ export abstract class Task {
 	};
 	public _targetPos: RoomPosition;
 	public _drone: { name: string };
+	public moveToOpts: MoveToOpts | undefined;
 
 	constructor(taskName: string, target: TargetType) {
 		this.taskName = taskName;
@@ -54,13 +55,15 @@ export abstract class Task {
 	}
 
 	private moveToTarget(): number {
-		return this.drone.moveTo(this.targetPos);
+		const range = this.moveToOpts && this.moveToOpts.range ? this.moveToOpts.range : 1;
+		return this.drone.moveTo(this.targetPos, { range });
 	}
 
 	public abstract work(): number;
 
 	get isWorking(): boolean {
-		return this.drone.pos.inRangeTo(this.targetPos, 1);
+		const range = this.moveToOpts && this.moveToOpts.range ? this.moveToOpts.range : 1;
+		return this.drone.pos.inRangeTo(this.targetPos, range);
 	}
 
 	get target(): RoomObject | null {
@@ -90,13 +93,13 @@ export abstract class Task {
 		return {
 			_targetPos: this._targetPos,
 			_targetRef: this._targetRef,
-			drone : this.drone,
+			drone : this._drone,
 			taskName: this.taskName
 		};
 	}
 
 	set proto(protoTask: ProtoTask) {
-		this.drone = protoTask.drone;
+		this._drone = protoTask.drone;
 		this._targetRef = protoTask._targetRef;
 		this._targetPos = protoTask._targetPos;
 	}

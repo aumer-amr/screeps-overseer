@@ -38,33 +38,61 @@ export class HarvesterHost extends SwarmHost {
 		this.creeps.forEach((creep: SwarmDrone) => {
 			if (creep.spawning === true && creep.ticksUntilSpawned === 0) { return; }
 
-			if (creep.carry.energy < creep.carryCapacity) {
-				const sources = creep.room.find(FIND_SOURCES);
-				if (!creep.pos.inRangeTo(sources[0], 1)) {
-					creep.task = Tasks.moveTo(sources[0].pos);
-				} else {
-					creep.task = Tasks.harvest(sources[0]);
+			const targets = this.findTransferTarget(creep);
+			if (targets.length > 0) {
+				if (targets[0].structureType === STRUCTURE_SPAWN) {
+					const spawn = (targets[0] as StructureSpawn);
+					if (spawn.energy < spawn.energyCapacity && ((spawn.energyCapacity - spawn.energy) > creep.carry.energy)) {
+						return this.harvest(creep);
+					}
 				}
-			} else {
-				const targets = creep.room.find(FIND_STRUCTURES, {
-					filter: (structure) => {
-						return (structure.structureType === STRUCTURE_EXTENSION ||
-							structure.structureType === STRUCTURE_SPAWN ||
-							structure.structureType === STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
-					}
-				});
-				if (targets.length > 0) {
-					if (!creep.pos.inRangeTo(targets[0], 1)) {
-						creep.task = Tasks.moveTo(targets[0].pos);
-					} else {
-						creep.task = Tasks.transfer(targets[0] as transferTargetType);
-					}
-				} else {
-					const spawn: StructureSpawn = creep.room.find(FIND_MY_SPAWNS)[0];
-					creep.task = Tasks.moveTo(spawn.pos);
+			}
+
+			if (creep.room.controller) {
+				if (creep.room.controller.ticksToDowngrade <= (creep.room.controller.level >= 4 ? 10000 : 20000)) {
+					return this.upgrade(creep);
 				}
 			}
 		});
+	}
+
+	private upgrade(creep: SwarmDrone): void {
+		if (creep.memory.upgrading && creep.carry.energy === 0) {
+			creep.memory.upgrading = false;
+		}
+		if (!creep.memory.upgrading && creep.carry.energy === creep.carryCapacity) {
+			creep.memory.upgrading = true;
+		}
+
+		if (creep.memory.upgrading && creep.room.controller) {
+			creep.task = Tasks.upgrade(creep.room.controller);
+		} else if (creep.carry.energy < creep.carryCapacity) {
+			const sources = creep.room.find(FIND_SOURCES);
+			creep.task = Tasks.harvest(sources[0]);
+		}
+	}
+
+	private harvest(creep: SwarmDrone): void {
+		if (creep.carry.energy < creep.carryCapacity) {
+			const sources = creep.room.find(FIND_SOURCES);
+			creep.task = Tasks.harvest(sources[0]);
+		} else {
+			const targets = this.findTransferTarget(creep);
+			if (targets.length > 0) {
+				creep.task = Tasks.transfer(targets[0] as transferTargetType);
+			}
+		}
+	}
+
+	private findTransferTarget(creep: SwarmDrone): AnyStructure[] {
+		const targets = creep.room.find(FIND_STRUCTURES, {
+			filter: (structure) => {
+				return (structure.structureType === STRUCTURE_EXTENSION ||
+					structure.structureType === STRUCTURE_SPAWN ||
+					structure.structureType === STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
+			}
+		});
+		return targets;
 	}
 
 }

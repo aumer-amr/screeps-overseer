@@ -7,7 +7,7 @@ export const taskName: string = "MoveTo";
 
 export class TaskMoveTo extends Task {
 
-	constructor(target: moveToTargetType) {
+	constructor(target: moveToTargetType, opts?: MoveToOpts) {
 		if (hasPos(target)) {
 			super(taskName, {
 				pos: target.pos,
@@ -19,10 +19,13 @@ export class TaskMoveTo extends Task {
 				ref: ""
 			});
 		}
+
+		this.moveToOpts = opts;
 	}
 
 	public isValidTask(): boolean {
-		return !this.drone.pos.inRangeTo(this.targetPos, 1);
+		const range = this.moveToOpts && this.moveToOpts.range ? this.moveToOpts.range : 1;
+		return !this.drone.pos.inRangeTo(this.targetPos, range);
 	}
 
 	public isValidTarget(): boolean {

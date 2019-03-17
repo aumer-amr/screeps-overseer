@@ -1,4 +1,4 @@
-import { Task } from "../tasks/task";
+import { Task as ProtoTask } from "../declarations/Task";
 
 export interface DroneMemory extends CreepMemory {
 	upgrading: boolean;
@@ -6,5 +6,5 @@ export interface DroneMemory extends CreepMemory {
 	memory: CreepMemory;
 	building: boolean;
 	targetPos: RoomPosition | undefined;
-	task: Task | null;
+	task: ProtoTask | null;
 }

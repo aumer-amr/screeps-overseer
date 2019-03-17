@@ -1,5 +1,5 @@
 import { EnergyStructure, isEnergyStructure } from "../../declarations/EnergyStructure";
-import { StoreStructure, isStoreStructure } from "../../declarations/StoreStructure";
+import { isStoreStructure, StoreStructure } from "../../declarations/StoreStructure";
 import { Task } from "../task";
 
 // tslint:disable-next-line: max-line-length

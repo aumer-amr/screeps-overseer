@@ -29,11 +29,16 @@ export class DroneActions {
 		return result;
 	}
 
-	public moveTo(destination: HasPos | RoomPosition): number {
+	public moveTo(destination: HasPos | RoomPosition, opts?: MoveToOpts): number {
 		if (this.creep.spawning) {
 			return -1;
 		}
 
-		return this.creep.moveTo(destination);
+		return this.creep.moveTo(destination, opts);
+	}
+
+	public upgradeController(controller: StructureController) {
+		const result = this.creep.upgradeController(controller);
+		return result;
 	}
 }

@@ -4,6 +4,7 @@ import { SwarmHost } from "./swarmhosts/swarmhost";
 
 import { SwarmDrone } from "./swarm/SwarmDrone";
 import { HarvesterHost } from "./swarmhosts/harvesterHost";
+import { UpgraderHost } from "./swarmhosts/upgraderHost";
 
 export class Overseer {
 
@@ -14,7 +15,7 @@ export class Overseer {
 		this.rooms = Game.rooms;
 
 		Object.keys(Game.creeps).forEach((creepName: string) => {
-			new SwarmDrone(Game.creeps[creepName]);
+			const creep = new SwarmDrone(Game.creeps[creepName]);
 		});
 
 	}
@@ -28,6 +29,9 @@ export class Overseer {
 				let host: SwarmHost | undefined;
 				if (priority === SpawnPriority.HarvesterHost) {
 					host = new HarvesterHost(room);
+				}
+				if (priority === SpawnPriority.UpgraderHost) {
+					host = new UpgraderHost(room);
 				}
 
 				if (typeof(host) !== undefined) {

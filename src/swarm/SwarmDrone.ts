@@ -9,6 +9,7 @@ import { TaskInvalid } from "../tasks/types/invalid";
 import { moveToTargetType, TaskMoveTo, taskName as MoveToTaskName } from "../tasks/types/moveTo";
 import { taskName as TransferTaskName, TaskTransfer, transferTargetType } from "../tasks/types/transfer";
 import { taskName as UpgradeTaskName, TaskUpgrade, upgradeTargetType } from "../tasks/types/upgrade";
+import { taskName as WithdrawTaskName, TaskWithdraw, withdrawTargetType } from "../tasks/types/withdraw";
 import { DroneActions } from "./DroneActions";
 
 export class SwarmDrone extends DroneActions {
@@ -100,6 +101,8 @@ export class SwarmDrone extends DroneActions {
 			newTask = new TaskTransfer(taskTarget as transferTargetType);
 		} else if (taskName === UpgradeTaskName) {
 			newTask = new TaskUpgrade(taskTarget as upgradeTargetType);
+		} else if (taskName === WithdrawTaskName) {
+			newTask = new TaskWithdraw(taskTarget as withdrawTargetType);
 		} else {
 			newTask = new TaskInvalid();
 		}
@@ -119,5 +122,10 @@ export class SwarmDrone extends DroneActions {
 			}
 		}
 		return 0;
+	}
+
+	public withdraw(target: Structure | Tombstone, amount?: number) {
+		const result = this.creep.withdraw(target, RESOURCE_ENERGY, amount);
+		return result;
 	}
 }

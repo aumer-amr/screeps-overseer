@@ -1,4 +1,5 @@
 import { DronesCache } from "../cache/drones";
+import { EnergyStructure } from "../declarations/EnergyStructure";
 import { SwarmDrone } from "../swarm/SwarmDrone";
 import { Tasks } from "../tasks/tasks";
 import { transferTargetType } from "../tasks/types/transfer";
@@ -7,7 +8,7 @@ import { SwarmHost } from "./swarmhost";
 
 export class HarvesterHost extends SwarmHost {
 
-	private maxCreeps: number = 3;
+	private maxCreeps: number = 5;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
 	private creepRole: string = "harvester";
 
@@ -43,6 +44,10 @@ export class HarvesterHost extends SwarmHost {
 				if (targets[0].structureType === STRUCTURE_SPAWN) {
 					const spawn = (targets[0] as StructureSpawn);
 					if (spawn.energy < spawn.energyCapacity && ((spawn.energyCapacity - spawn.energy) > creep.carry.energy)) {
+						if (creep.memory.upgrading === true && creep.carry.energy > 0) {
+							creep.memory.upgrading = false;
+							return this.transfer(creep);
+						}
 						return this.harvest(creep);
 					}
 				}
@@ -54,6 +59,15 @@ export class HarvesterHost extends SwarmHost {
 				}
 			}
 		});
+	}
+
+	private transfer(creep: SwarmDrone): void {
+		if (creep.carry.energy < creep.carryCapacity) {
+			const spawn = creep.pos.lookForStructure(STRUCTURE_SPAWN) as EnergyStructure;
+			if (spawn) {
+				creep.task = Tasks.transfer(spawn);
+			}
+		}
 	}
 
 	private upgrade(creep: SwarmDrone): void {

@@ -2,6 +2,7 @@ import { TaskHarvest} from "./types/harvest";
 import { moveToTargetType, TaskMoveTo } from "./types/moveTo";
 import { TaskTransfer, transferTargetType } from "./types/transfer";
 import { TaskUpgrade, upgradeTargetType } from "./types/upgrade";
+import { TaskWithdraw, withdrawTargetType } from "./types/withdraw";
 
 export class Tasks {
 
@@ -19,6 +20,10 @@ export class Tasks {
 
 	public static upgrade(target: upgradeTargetType): TaskUpgrade {
 		return new TaskUpgrade(target);
+	}
+
+	public static withdraw(target: withdrawTargetType, amount?: number | undefined): TaskWithdraw {
+		return new TaskWithdraw(target, amount);
 	}
 
 }

@@ -7,4 +7,5 @@ export interface DroneMemory extends CreepMemory {
 	building: boolean;
 	targetPos: RoomPosition | undefined;
 	task: ProtoTask | null;
+	sourceId: string | undefined;
 }

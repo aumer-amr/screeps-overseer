@@ -18,6 +18,8 @@ export class HarvesterHost extends SwarmHost {
 			const drone: SwarmDrone = DronesCache.drones[droneName];
 			if (drone.memory.role === this.creepRole) { this.creeps.push(drone); }
 		}
+
+		this.maxCreeps = room.find(FIND_SOURCES).length * 3;
 	}
 
 	public isAllowedSpawn(): boolean {
@@ -81,15 +83,19 @@ export class HarvesterHost extends SwarmHost {
 		if (creep.memory.upgrading && creep.room.controller) {
 			creep.task = Tasks.upgrade(creep.room.controller);
 		} else if (creep.carry.energy < creep.carryCapacity) {
-			const sources = creep.room.find(FIND_SOURCES);
-			creep.task = Tasks.harvest(sources[0]);
+			const source = creep.findAndAssignSource();
+			if (source) {
+				creep.task = Tasks.harvest(source);
+			}
 		}
 	}
 
 	private harvest(creep: SwarmDrone): void {
 		if (creep.carry.energy < creep.carryCapacity) {
-			const sources = creep.room.find(FIND_SOURCES);
-			creep.task = Tasks.harvest(sources[0]);
+			const source = creep.findAndAssignSource();
+			if (source) {
+				creep.task = Tasks.harvest(source);
+			}
 		} else {
 			const targets = this.findTransferTarget(creep);
 			if (targets.length > 0) {

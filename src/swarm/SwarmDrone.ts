@@ -12,6 +12,10 @@ import { taskName as UpgradeTaskName, TaskUpgrade, upgradeTargetType } from "../
 import { taskName as WithdrawTaskName, TaskWithdraw, withdrawTargetType } from "../tasks/types/withdraw";
 import { DroneActions } from "./DroneActions";
 
+interface SourceDrones {
+	[key: string]: number;
+}
+
 export class SwarmDrone extends DroneActions {
 
 	public body: BodyPartDefinition[];
@@ -124,8 +128,43 @@ export class SwarmDrone extends DroneActions {
 		return 0;
 	}
 
-	public withdraw(target: Structure | Tombstone, amount?: number) {
+	public withdraw(target: Structure | Tombstone, amount?: number): number {
 		const result = this.creep.withdraw(target, RESOURCE_ENERGY, amount);
 		return result;
+	}
+
+	public findAndAssignSource(): Source | null {
+		if (this.memory.sourceId) {
+			return Game.getObjectById(this.memory.sourceId);
+		}
+
+		const assignedDronesPerSource: SourceDrones = {};
+		for (const droneName in DronesCache.drones) {
+			const drone: SwarmDrone = DronesCache.drones[droneName];
+
+			if (drone.memory.sourceId) {
+				if (!assignedDronesPerSource[drone.memory.sourceId]) {
+					assignedDronesPerSource[drone.memory.sourceId] = 1;
+					continue;
+				}
+
+				assignedDronesPerSource[drone.memory.sourceId]++;
+			}
+		}
+
+		const sources = this.room.find(FIND_SOURCES);
+		for (const sourceName in sources) {
+			const possibleSource = sources[sourceName];
+			if (!assignedDronesPerSource[possibleSource.id]) {
+				assignedDronesPerSource[possibleSource.id] = 0;
+			}
+
+			if (assignedDronesPerSource[possibleSource.id] < 3) {
+				this.memory.sourceId = possibleSource.id;
+				return possibleSource;
+			}
+		}
+
+		return null;
 	}
 }

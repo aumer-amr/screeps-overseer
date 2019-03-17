@@ -11,7 +11,7 @@ export abstract class SwarmHost {
 	}
 
 	public abstract isAllowedSpawn(): boolean;
-	public abstract generate(spawn: string): void;
+	public abstract generate(): void;
 	public abstract task(): void;
 
 	public work(): void {

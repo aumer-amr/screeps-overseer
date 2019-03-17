@@ -1,7 +1,8 @@
-import { SwarmRoom } from "./memory/swarmRoom";
 import { SpawnPriority } from "./priorities/spawn";
 import { SwarmHost } from "./swarmhosts/swarmhost";
 
+import { SpawnerCache } from "./cache/spawner";
+import { Spawner } from "./swarm/Spawner";
 import { SwarmDrone } from "./swarm/SwarmDrone";
 import { HarvesterHost } from "./swarmhosts/harvesterHost";
 import { UpgraderHost } from "./swarmhosts/upgraderHost";
@@ -23,7 +24,10 @@ export class Overseer {
 	public spawn(): void {
 		Object.keys(this.rooms).forEach((roomName: string) => {
 			const room: Room = this.rooms[roomName];
-			const memory = room.memory as SwarmRoom;
+
+			if (!SpawnerCache.spawners[room.name]) {
+				SpawnerCache.spawners[room.name] = new Spawner(room);
+			}
 
 			(Object as any).values(SpawnPriority).forEach((priority: number) => {
 				let host: SwarmHost | undefined;
@@ -34,22 +38,14 @@ export class Overseer {
 					host = new UpgraderHost(room);
 				}
 
-				if (typeof(host) !== undefined) {
-					const spawns: StructureSpawn[] = room.find(FIND_MY_SPAWNS);
-					spawns.forEach((spawn: StructureSpawn) => {
-						if (host) {
-							host.generate(spawn.name);
-						}
-					});
-				}
-
 				if (host) {
-					host.task();
 					this.hosts.push(host);
+					host.generate();
+					host.task();
 				}
 			});
 
-			room.memory = memory;
+			SpawnerCache.spawners[room.name].run();
 		});
 	}
 

@@ -16,18 +16,18 @@ function main(): void {
 		passedTicks = 0;
 	}
 
-	for (const name in Memory.creeps) {
-		if (!Game.creeps[name]) {
-			delete Memory.creeps[name];
-			console.log("Clearing non-existing creep memory:", name);
-		}
-	}
-
 	DronesCache.clear();
 
 	overseer.init();
 	overseer.spawn();
 	overseer.work();
+
+	/*for (const name in Memory.creeps) {
+		if (!Game.creeps[name]) {
+			delete Memory.creeps[name];
+			console.log("Clearing non-existing creep memory:", name);
+		}
+	}*/
 }
 
 export function loop(): void {

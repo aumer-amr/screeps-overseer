@@ -1,9 +1,10 @@
 import { DronesCache } from "../cache/drones";
+import { SpawnerCache } from "../cache/spawner";
 import { EnergyStructure } from "../declarations/EnergyStructure";
+import { SpawnRequest } from "../declarations/SpawnRequest";
 import { SwarmDrone } from "../swarm/SwarmDrone";
 import { Tasks } from "../tasks/tasks";
 import { transferTargetType } from "../tasks/types/transfer";
-import nameGenerator from "../utils/nameGenerator";
 import { SwarmHost } from "./swarmhost";
 
 export class HarvesterHost extends SwarmHost {
@@ -24,15 +25,16 @@ export class HarvesterHost extends SwarmHost {
 		throw new Error("Method not implemented.");
 	}
 
-	public generate(spawn: string): void {
-		if (this.creeps.length < this.maxCreeps) {
-			if (Game.spawns[spawn].canCreateCreep(this.defaultBody) !== ERR_NOT_ENOUGH_ENERGY) {
-				Game.spawns[spawn].createCreep(
-					this.defaultBody,
-					nameGenerator(this.creepRole),
-					{ role: this.creepRole });
-			}
+	public generate(): void {
+		if (this.creeps.length >= this.maxCreeps) {
+			return;
 		}
+
+		const spawnRequest: SpawnRequest = {
+			body: this.defaultBody,
+			role: this.creepRole
+		};
+		SpawnerCache.spawners[this.room.name].queue(spawnRequest);
 	}
 
 	public task(): void {

@@ -7,7 +7,7 @@ import { SwarmHost } from "./swarmhost";
 
 export class UpgraderHost extends SwarmHost {
 
-	private maxCreeps: number = 3;
+	private maxCreeps: number = 5;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
 	public creepRole: string = "Upgrader";
 

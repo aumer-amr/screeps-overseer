@@ -9,7 +9,7 @@ import { SwarmHost } from "./swarmhost";
 
 export class HarvesterHost extends SwarmHost {
 
-	private maxCreeps: number = 5;
+	private maxCreeps: number = 7;
 	private minCreeps: number = 3;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
 	public creepRole: string = "harvester";

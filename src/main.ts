@@ -2,6 +2,7 @@
 
 import { DronesCache } from "./cache/drones";
 import { Overseer } from "./Overseer";
+import Profiler from "./profiler/screeps-profiler";
 import "./prototypes/RoomPosition";
 
 const overseer = new Overseer();
@@ -22,5 +23,9 @@ function main(): void {
 }
 
 export function loop(): void {
-	main();
+	Profiler.wrap(() => {
+		main();
+	});
 }
+
+Profiler.enable();

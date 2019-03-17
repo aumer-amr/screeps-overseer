@@ -18,8 +18,6 @@ export class HarvesterHost extends SwarmHost {
 			const drone: SwarmDrone = DronesCache.drones[droneName];
 			if (drone.memory.role === this.creepRole) { this.creeps.push(drone); }
 		}
-
-		this.maxCreeps = room.find(FIND_SOURCES).length * 3;
 	}
 
 	public isAllowedSpawn(): boolean {

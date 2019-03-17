@@ -20,7 +20,7 @@ export abstract class SwarmHost {
 			if (drone.hasValidTask) {
 				drone.run();
 			}
-		};
+		}
 	}
 
 }

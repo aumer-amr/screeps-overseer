@@ -26,7 +26,11 @@ export default {
       __BUILD_TIME__: JSON.stringify(Date.now())
     }),
     resolve(),
-    commonjs(),
+    commonjs({
+		namedExports: {
+			'screeps-profiler': ['profiler'],
+		}
+	}),
     typescript({tsconfig: "./tsconfig.json"}),
     screeps({
       config: require("./screeps")[cfg],

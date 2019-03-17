@@ -9,7 +9,7 @@ export class UpgraderHost extends SwarmHost {
 
 	private maxCreeps: number = 3;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
-	private creepRole: string = "upgrader";
+	public creepRole: string = "Upgrader";
 
 	constructor(room: Room) {
 		super(room);

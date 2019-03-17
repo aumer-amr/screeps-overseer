@@ -11,7 +11,7 @@ const reportAtTicks = 500;
 const overseer = new Overseer();
 
 function main(): void {
-	if (passedTicks++ === reportAtTicks) {
+	if (++passedTicks > reportAtTicks) {
 		Game.profiler.profile(reportAtTicks);
 		passedTicks = 0;
 	}

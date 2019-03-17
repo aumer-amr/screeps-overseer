@@ -4,6 +4,7 @@ import { Task } from "../tasks/task";
 import { deref } from "../utils/refs";
 
 import { DronesCache } from "../cache/drones";
+import { SwarmHost } from "../swarmhosts/swarmhost";
 import { TaskHarvest, taskName as HarvestTaskName } from "../tasks/types/harvest";
 import { TaskInvalid } from "../tasks/types/invalid";
 import { moveToTargetType, TaskMoveTo, taskName as MoveToTaskName } from "../tasks/types/moveTo";
@@ -166,5 +167,9 @@ export class SwarmDrone extends DroneActions {
 		}
 
 		return null;
+	}
+
+	public reassign(swarmHost: SwarmHost) {
+		this.memory.role = swarmHost.creepRole;
 	}
 }

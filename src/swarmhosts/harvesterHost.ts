@@ -11,7 +11,7 @@ export class HarvesterHost extends SwarmHost {
 
 	private maxCreeps: number = 5;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
-	private creepRole: string = "harvester";
+	public creepRole: string = "harvester";
 
 	constructor(room: Room) {
 		super(room);

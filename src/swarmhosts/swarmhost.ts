@@ -4,6 +4,7 @@ import { SwarmDrone } from "../swarm/SwarmDrone";
 export abstract class SwarmHost {
 	protected creeps: SwarmDrone[];
 	public room: Room;
+	public abstract creepRole: string;
 
 	constructor(room: Room) {
 		this.creeps = [];

@@ -45,7 +45,7 @@ export class HarvesterHost extends SwarmHost {
 			if (targets.length > 0) {
 				if (targets[0].structureType === STRUCTURE_SPAWN) {
 					const spawn = (targets[0] as StructureSpawn);
-					if (spawn.energy < spawn.energyCapacity && ((spawn.energyCapacity - spawn.energy) > creep.carry.energy)) {
+					if (spawn.energy < spawn.energyCapacity && ((spawn.energyCapacity - spawn.energy) >= creep.carry.energy)) {
 						if (creep.memory.upgrading === true && creep.carry.energy > 0) {
 							creep.memory.upgrading = false;
 							return this.transfer(creep);

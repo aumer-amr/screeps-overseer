@@ -11,6 +11,13 @@ const reportAtTicks = 500;
 const overseer = new Overseer();
 
 function main(): void {
+	for (const name in Memory.creeps) {
+		if (!Game.creeps[name]) {
+			delete Memory.creeps[name];
+			console.log("Clearing non-existing creep memory:", name);
+		}
+	}
+
 	if (++passedTicks > reportAtTicks) {
 		Game.profiler.profile(reportAtTicks);
 		passedTicks = 0;
@@ -21,13 +28,6 @@ function main(): void {
 	overseer.init();
 	overseer.spawn();
 	overseer.work();
-
-	for (const name in Memory.creeps) {
-		if (!Game.creeps[name]) {
-			delete Memory.creeps[name];
-			console.log("Clearing non-existing creep memory:", name);
-		}
-	}
 }
 
 export function loop(): void {

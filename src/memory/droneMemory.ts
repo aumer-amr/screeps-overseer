@@ -1,5 +1,3 @@
-import { Task as ProtoTask } from "../declarations/Task";
-
 export interface DroneMemory extends CreepMemory {
 	upgrading: boolean;
 	role: string;

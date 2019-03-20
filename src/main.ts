@@ -3,6 +3,7 @@
 import { DronesCache } from "./cache/drones";
 import { Overseer } from "./Overseer";
 import Profiler from "./profiler/screeps-profiler";
+import "./prototypes/Room";
 import "./prototypes/RoomPosition";
 
 let passedTicks = 0;

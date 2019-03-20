@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { SpawnRequest } from "../declarations/SpawnRequest";
 import nameGenerator from "../utils/nameGenerator";
 
 interface SpawnStructure extends StructureSpawn {

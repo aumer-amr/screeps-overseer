@@ -1,6 +1,4 @@
 import { DronesCache } from "../cache/drones";
-import { TargetPos, TargetType } from "../declarations/Target";
-import { Task as ProtoTask } from "../declarations/Task";
 import { SwarmDrone } from "../swarm/SwarmDrone";
 import { deref, derefRoomPosition } from "../utils/refs";
 

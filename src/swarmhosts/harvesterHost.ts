@@ -1,7 +1,5 @@
 import { DronesCache } from "../cache/drones";
 import { SpawnerCache } from "../cache/spawner";
-import { EnergyStructure } from "../declarations/EnergyStructure";
-import { SpawnRequest } from "../declarations/SpawnRequest";
 import { SwarmDrone } from "../swarm/SwarmDrone";
 import { Tasks } from "../tasks/tasks";
 import { transferTargetType } from "../tasks/types/transfer";
@@ -9,7 +7,7 @@ import { SwarmHost } from "./swarmhost";
 
 export class HarvesterHost extends SwarmHost {
 
-	private maxCreeps: number = 7;
+	private maxCreeps: number = 6;
 	private minCreeps: number = 3;
 	private defaultBody: BodyPartConstant[] = [WORK, CARRY, MOVE];
 	public creepRole: string = "harvester";

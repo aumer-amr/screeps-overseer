@@ -1,4 +1,3 @@
-import { Task as ProtoTask } from "../declarations/Task";
 import { DroneMemory } from "../memory/droneMemory";
 import { Task } from "../tasks/task";
 import { deref } from "../utils/refs";

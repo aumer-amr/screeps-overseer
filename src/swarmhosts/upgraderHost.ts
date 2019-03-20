@@ -1,6 +1,5 @@
 import { DronesCache } from "../cache/drones";
 import { SpawnerCache } from "../cache/spawner";
-import { SpawnRequest } from "../declarations/SpawnRequest";
 import { SwarmDrone } from "../swarm/SwarmDrone";
 import { Tasks } from "../tasks/tasks";
 import { SwarmHost } from "./swarmhost";

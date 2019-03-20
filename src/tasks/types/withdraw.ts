@@ -1,4 +1,4 @@
-import { EnergyStructure, isEnergyStructure } from "../../declarations/EnergyStructure";
+import { isEnergyStructure } from "../../declarations/EnergyStructure";
 import { isStoreStructure } from "../../declarations/StoreStructure";
 import { Task } from "../task";
 

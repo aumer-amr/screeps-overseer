@@ -60,7 +60,7 @@ export interface PlannerMemory {
 		anchor: TargetPos
 	};
 	lastGenerated?: number;
-	mapsByLevel?: { [rcl: number]: { [structureType: string]: TargetPos[] } };
+	mapsByLevel: { [rcl: number]: { [structureType: string]: TargetPos[] } };
 	savedFlags: Array<{ secondaryColor: ColorConstant, pos: TargetPos, memory: FlagMemory }>;
 }
 
@@ -92,11 +92,9 @@ export class RoomPlanner {
 	}
 
 	private refresh(){
-		if (this.memory.mapsByLevel) {
-			for (let rcl = 1; rcl <= 8; rcl++) {
-				this.preBuild(rcl);
-				this.memory.mapsByLevel[rcl] = this.map;
-			}
+		for (let rcl = 1; rcl <= 8; rcl++) {
+			this.preBuild(rcl);
+			this.memory.mapsByLevel[rcl] = this.map;
 		}
 
 		const placement = this.plannedStructurePositions(STRUCTURE_SPAWN);
